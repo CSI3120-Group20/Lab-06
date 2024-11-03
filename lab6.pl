@@ -32,21 +32,21 @@ multiple_of(A, B) :- Remainder is A mod B, Remainder = 0.
 % Question 3
 
 % First Call
-second_maximum([H|T], Result) :- second_maximum_recursive(T, H, H, Result).
+second_max([H|T], Result) :- second_max_recursive(T, H, H, Result).
 
 % Error - List too small
-second_maximum(_, Result) :- Result = 'Error: List must contain at least two distinct elements.'.
+second_max(_, Result) :- Result = 'Error: List must contain at least two distinct elements.'.
 
 % Recurisve Case
-second_maximum_recursive([H|T], _, Max, Result) :- H > Max, second_maximum_recursive(T, Max, H, Result1), Result=Result1.
-second_maximum_recursive([H|T], SecondMax, Max, Result) :- H < Max, H > SecondMax, second_maximum_recursive(T, H, Max, Result1), Result=Result1.
-second_maximum_recursive([H|T], SecondMax, Max, Result) :- SecondMax = Max, second_maximum_recursive(T, H, Max, Result1), Result=Result1. % This case is necessary to account for many instances of the Max
-second_maximum_recursive([_|T], SecondMax, Max, Result) :- second_maximum_recursive(T, SecondMax, Max, Result1), Result=Result1.
+second_max_recursive([H|T], _, Max, Result) :- H > Max, second_max_recursive(T, Max, H, Result1), Result=Result1.
+second_max_recursive([H|T], SecondMax, Max, Result) :- H < Max, H > SecondMax, second_max_recursive(T, H, Max, Result1), Result=Result1.
+second_max_recursive([H|T], SecondMax, Max, Result) :- SecondMax = Max, second_max_recursive(T, H, Max, Result1), Result=Result1. % This case is necessary to account for many instances of the Max
+second_max_recursive([_|T], SecondMax, Max, Result) :- second_max_recursive(T, SecondMax, Max, Result1), Result=Result1.
 
 % Base Case - Error - No two distinct elements
-second_maximum_recursive([], SecondMax, Max, Result) :- SecondMax = Max, Result = 'Error: List must contain at least two distinct elements.'.
+second_max_recursive([], SecondMax, Max, Result) :- SecondMax = Max, Result = 'Error: List must contain at least two distinct elements.'.
 % Base Case
-second_maximum_recursive([], SecondMax, _, Result) :- Result = SecondMax.
+second_max_recursive([], SecondMax, _, Result) :- Result = SecondMax.
 
 %  Task B
 
