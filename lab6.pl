@@ -1,29 +1,28 @@
 %  Task A
 
 % Question 1
-% Code based on a factorial program implemented in another course
-factorial(N, _, R) :-
-    N>0,
-    N1 is N-1,
-    factorial(N1, _, R1),
-    /*go down to R1=1, then go back up again multiplying each R by N*/
-    R is R1*N.
-
+% Base Case
 factorial(0, _, 1).
-factorial(N, _, R) :- N < 0, R = 'Error: Input must be a non-negative integer.'. % Note that 'is' evaluates arithmetic expressions, '=' sets a variable to other datatypes
+
+% Error Case
+factorial(N, _, Result) :- N < 0, Result = 'Error: Input must be a non-negative integer.'. % Note that 'is' evaluates arithmetic expressions, '=' sets a variable to other datatypes
+
+% Recursive Case
+% Code based on a factorial program implemented in another course
+factorial(N, _, Result) :- N1 is N-1, factorial(N1, _, Result1), Result is Result1*N.
 
 % Question 2
 % Both True Case
-filter_list([H|T], [G, M], Result) :- conditions(H, G, M), filter_list(T, [G, M], NewResult), Result = [H|NewResult].
+filter_list([H|T], [greater_than(G), multiple_of(M)], Result) :- conditions(H, G, M), filter_list(T, [greater_than(G), multiple_of(M)], NewResult), Result = [H|NewResult].
 
 % One False Case
-filter_list([H|T], [G, M], Result) :- not(conditions(H, G, M)), filter_list(T, [G, M], Result).
+filter_list([H|T], [greater_than(G), multiple_of(M)], Result) :- not(conditions(H, G, M)), filter_list(T, [greater_than(G), multiple_of(M)], Result).
 
 % Base Case True
-filter_list([H], [G, M], Result) :- conditions(H, G, M), Result = [H].
+filter_list([H], [greater_than(G), multiple_of(M)], Result) :- conditions(H, G, M), Result = [H].
 
 % Base Case False
-filter_list([H], [G, M], Result) :- not(conditions(H, G, M)), Result = [].
+filter_list([H], [greater_than(G), multiple_of(M)], Result) :- not(conditions(H, G, M)), Result = [].
 
 % Supplementary predicates
 conditions(H, G, M) :- greater_than(H, G), multiple_of(H, M).
