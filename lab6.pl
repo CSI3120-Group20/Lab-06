@@ -19,10 +19,7 @@ filter_list([H|T], [greater_than(G), multiple_of(M)], Result) :- conditions(H, G
 filter_list([H|T], [greater_than(G), multiple_of(M)], Result) :- not(conditions(H, G, M)), filter_list(T, [greater_than(G), multiple_of(M)], Result).
 
 % Base Case True
-filter_list([H], [greater_than(G), multiple_of(M)], Result) :- conditions(H, G, M), Result = [H].
-
-% Base Case False
-filter_list([H], [greater_than(G), multiple_of(M)], Result) :- not(conditions(H, G, M)), Result = [].
+filter_list([], _, Result) :- Result = [].
 
 % Supplementary predicates
 conditions(H, G, M) :- greater_than(H, G), multiple_of(H, M).
