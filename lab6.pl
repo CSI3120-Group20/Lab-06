@@ -2,14 +2,14 @@
 
 % Question 1
 % Base Case
-factorial(0, _, 1).
+factorial(0, Acc, Result) :- Result is Acc.
 
 % Error Case
 factorial(N, _, Result) :- N < 0, Result = 'Error: Input must be a non-negative integer.'. % Note that 'is' evaluates arithmetic expressions, '=' sets a variable to other datatypes
 
 % Recursive Case
 % Code based on a factorial program implemented in another course
-factorial(N, _, Result) :- N1 is N-1, factorial(N1, _, Result1), Result is Result1*N.
+factorial(N, Acc, Result) :- Acc1 is Acc*N, N1 is N-1, factorial(N1, Acc1, Result).
 
 % Question 2
 % Both True Case
