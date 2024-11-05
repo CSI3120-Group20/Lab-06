@@ -45,6 +45,30 @@ second_max_recursive([], SecondMax, Max, Result) :- SecondMax = Max, Result = 'E
 % Base Case
 second_max_recursive([], SecondMax, _, Result) :- Result = SecondMax.
 
+
 %  Task B
+
+% This predicate recursively find the first person in the list who is taller than a
+% specified height and the age between a minimum (Inclusive) and maximum (Exclisive) range.
+% Once a match is found, the search should stop.
+% 
+% Return the result in `Result`
+
+% The base case: if the input list is empty, the Result is 'No match found.'
+taller_than([], _, _, 'No match found.').
+
+% Recursive case: If the first person in the list is matched, return it.
+taller_than([person(Name, Height, Age) | _], SpecHeight, age_in_range(MinAge, MaxAge), person(Name, Height, Age)) :-
+    Height > SpecHeight,
+    Age >= MinAge,
+    Age < MaxAge,
+    % Cut here to stop after finding the first match.
+    !. 
+
+% Recursive case: If the first person in the list doesn't match, check the rest of the person `Tail`.
+% Tail refers to the rest of the person list
+taller_than([_ | Tail], SpecHeight, AgeRange, Result) :-
+    taller_than(Tail, SpecHeight, AgeRange, Result).
+
 
 %  Task C
