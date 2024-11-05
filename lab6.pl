@@ -48,3 +48,41 @@ second_max_recursive([], SecondMax, _, Result) :- Result = SecondMax.
 %  Task B
 
 %  Task C
+divisible(X,Y):-
+    N is Y*Y,
+    N =< X,
+    X mod Y =:= 0.
+    
+divisible(X,Y):-
+    Y < X,
+    Y1 is Y+1,
+    divisible(X,Y1).
+    
+is_prime(X):-
+    Y is 2, X > 1, \+divisible(X,Y).
+
+% Helper predicate to reverse digits of a number
+reverse_digits(N, Reversed) :-
+    number_chars(N, Digits),
+    reverse(Digits, ReversedDigits),
+    number_chars(Reversed, ReversedDigits).
+
+% Main predicate with tail-recursive accumulator and cut operator
+filter_and_transform(List, Result) :-
+    filter_and_transform(List, [], Result, 0).
+
+filter_and_transform(_, Acc, Result, Count) :-
+    Count >= 5, !,  % Cut operator to stop after 5 results
+    reverse(Acc, Result).  % Reverse the accumulator for the final output
+
+filter_and_transform([H|T], Acc, Result, Count) :-
+    is_prime(H),  % Check if the number is prime
+    reverse_digits(H, Transformed),
+    NewCount is Count + 1,
+    filter_and_transform(T, [Transformed|Acc], Result, NewCount).  % Add to accumulator
+
+filter_and_transform([_|T], Acc, Result, Count) :-
+    filter_and_transform(T, Acc, Result, Count).  % Skip non-prime numbers
+
+filter_and_transform([], Acc, Result, _) :-
+    reverse(Acc, Result).  % Base case to reverse and return final result if fewer than 5 primes
