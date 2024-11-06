@@ -70,6 +70,7 @@ taller_than([_ | Tail], SpecHeight, AgeRange, Result) :-
     taller_than(Tail, SpecHeight, AgeRange, Result).
 
 %  Task C
+%Auxiliary function for checking if X is divisible by Y
 divisible(X,Y):-
     N is Y*Y,
     N =< X,
@@ -79,15 +80,16 @@ divisible(X,Y):-
     Y < X,
     Y1 is Y+1,
     divisible(X,Y1).
-    
+
+%Auxiliary function for checking if a number is prime
 is_prime(X):-
     Y is 2, X > 1, \+divisible(X,Y).
 
 % Helper predicate to reverse digits of a number
 reverse_digits(N, Reversed) :-
-    number_chars(N, Digits),
-    reverse(Digits, ReversedDigits),
-    number_chars(Reversed, ReversedDigits).
+    number_chars(N, Digits), %converts N into a list of digits
+    reverse(Digits, ReversedDigits),%reverse the list of digits
+    number_chars(Reversed, ReversedDigits).%combine digits back into a number
 
 % Main predicate with tail-recursive accumulator and cut operator
 filter_and_transform(List, Result) :-
@@ -99,13 +101,15 @@ filter_and_transform(_, Acc, Result, Count) :-
 
 filter_and_transform([H|T], Acc, Result, Count) :-
     is_prime(H),  % Check if the number is prime
-    reverse_digits(H, Transformed),
-    NewCount is Count + 1,
+    reverse_digits(H, Transformed), %reverse digits if so
+    NewCount is Count + 1, %Track the number of transformed primes
     filter_and_transform(T, [Transformed|Acc], Result, NewCount).  % Add to accumulator
 
+%recursive case for non-primes
 filter_and_transform([_|T], Acc, Result, Count) :-
     filter_and_transform(T, Acc, Result, Count).  % Skip non-prime numbers
 
+%Based case when the input list is empty
 filter_and_transform([], Acc, Result, _) :-
     reverse(Acc, Result).  % Base case to reverse and return final result if fewer than 5 primes
 
